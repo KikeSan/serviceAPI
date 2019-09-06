@@ -62,8 +62,9 @@ app.get('/', (req, res) => {
 app.post('/tareas', (req, res) => {
   tareas.push({
     id: tareas.length + 1,
-    name: req.query.name,
-    apellido: req.query.apellido
+    title: req.query.title,
+    description: req.query.description,
+    status: req.query.status
   });
   //tareas.push('User ' + tareas.length);
   //res.send("New user add")
