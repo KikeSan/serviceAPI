@@ -34,9 +34,14 @@ var tareas = [
     status: 'complete'
   }
 ];
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
   next();
 });
 
@@ -60,6 +65,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/tareas', (req, res) => {
+  //console.log(req);
   tareas.push({
     id: tareas.length + 1,
     title: req.query.title,
@@ -74,8 +80,13 @@ app.patch('/tareas', (req, res) => {
   res.send('PATCH method');
 });
 
-app.delete('/tareas', (req, res) => {
-  res.send('DELETE method');
+app.delete('/tareas/:id', (req, res) => {
+  console.log('id ' + req.params.id);
+  var result = tareas.filter(element => {
+    return element.id !== req.params.id;
+  });
+  console.log('res ' + result);
+  res.send(result);
 });
 
 http.createServer(app).listen(8001, () => {
