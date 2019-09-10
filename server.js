@@ -81,13 +81,12 @@ app.patch('/tareas', (req, res) => {
 });
 
 app.delete('/tareas/:id', (req, res) => {
-  console.log('id ' + req.params.id);
-  var result = tareas.filter(element => {
-    console.log('Dentro del filter:' + element.id + ' - ' + req.params.id);
-    return element.id !== req.params.id;
-  });
-  //console.log('res ' + result);
-  res.send(result);
+  for( var i = 0; i < tareas.length; i++){ 
+    if ( tareas[i].id === Number(req.params.id)) {
+      tareas.splice(i, 1);
+    }
+  }
+  res.send(tareas);
 });
 
 http.createServer(app).listen(8001, () => {
