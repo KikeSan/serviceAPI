@@ -50,7 +50,7 @@ app.get('/tareas', (req, res) => {
   res.send(tareas);
 });
 
-app.get('/tareas/:id', (req, res) => {
+app.get('/tareas/editar/:id', (req, res) => {
   var result;
   tareas.forEach((element, index) => {
     if (element.id == req.params.id) {
@@ -80,9 +80,24 @@ app.patch('/tareas', (req, res) => {
   res.send('PATCH method');
 });
 
+app.put('/tareas/actualizar', (req, res) => {
+  console.log('Params: ', req.query.id);
+  for (let i = 0; i < tareas.length; i++) {
+    if (tareas[i].id == Number(req.query.id)) {
+      tareas[i] = {
+        id: req.query.id,
+        title: req.query.title,
+        description: req.query.description,
+        status: req.query.status
+      };
+    }
+  }
+  res.send(tareas);
+});
+
 app.delete('/tareas/:id', (req, res) => {
-  for( var i = 0; i < tareas.length; i++){ 
-    if ( tareas[i].id === Number(req.params.id)) {
+  for (var i = 0; i < tareas.length; i++) {
+    if (tareas[i].id === Number(req.params.id)) {
       tareas.splice(i, 1);
     }
   }
