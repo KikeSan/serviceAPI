@@ -97,7 +97,7 @@ app.put('/tareas/actualizar', (req, res) => {
 
 app.delete('/tareas/:id', (req, res) => {
   for (var i = 0; i < tareas.length; i++) {
-    if (tareas[i].id === Number(req.params.id)) {
+    if (Number(tareas[i].id) === Number(req.params.id)) {
       tareas.splice(i, 1);
     }
   }
