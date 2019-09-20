@@ -7,31 +7,36 @@ var tareas = [
     id: 1,
     title: 'Tarea1',
     description: 'loremp impsum',
-    status: 'todo'
+    status: 'todo',
+    fecha: 'Fri Jun 14 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   },
   {
     id: 2,
     title: 'Tarea2',
     description: 'loremp impsum',
-    status: 'todo'
+    status: 'todo',
+    fecha: 'Wed Jul 24 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   },
   {
     id: 3,
-    title: 'Tarea3',
+    title: 'Cronograma',
     description: 'loremp impsum',
-    status: 'todo'
+    status: 'todo',
+    fecha: 'Sat Aug 31 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   },
   {
     id: 4,
-    title: 'Tarea4',
+    title: 'demo 4',
     description: 'loremp impsum',
-    status: 'doing'
+    status: 'doing',
+    fecha: 'Mon Sep 2 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   },
   {
     id: 5,
     title: 'Tarea5',
     description: 'loremp impsum',
-    status: 'complete'
+    status: 'complete',
+    fecha: 'Fri Sep 18 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   }
 ];
 app.use(function(req, res, next) {
@@ -70,7 +75,8 @@ app.post('/tareas', (req, res) => {
     id: tareas.length + 1,
     title: req.query.title,
     description: req.query.description,
-    status: req.query.status
+    status: req.query.status,
+    fecha: req.query.fecha
   });
   //tareas.push('User ' + tareas.length);
   //res.send("New user add")
@@ -88,7 +94,8 @@ app.put('/tareas/actualizar', (req, res) => {
         id: req.query.id,
         title: req.query.title,
         description: req.query.description,
-        status: req.query.status
+        status: req.query.status,
+        fecha: req.query.fecha
       };
     }
   }
