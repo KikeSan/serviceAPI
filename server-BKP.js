@@ -51,7 +51,6 @@ app.use(function(req, res, next) {
 });
 
 app.get('/tareas', (req, res) => {
-  //res.set('Content-Type', 'application/json')
   res.send(tareas);
 });
 
@@ -70,7 +69,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/tareas', (req, res) => {
-  //console.log(req);
   tareas.push({
     id: tareas.length + 1,
     title: req.query.title,
@@ -78,8 +76,6 @@ app.post('/tareas', (req, res) => {
     status: req.query.status,
     fecha: req.query.fecha
   });
-  //tareas.push('User ' + tareas.length);
-  //res.send("New user add")
   res.send(tareas);
 });
 app.patch('/tareas', (req, res) => {
