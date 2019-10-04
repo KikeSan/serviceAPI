@@ -3,6 +3,7 @@ import express = require('express')
 import { RouterTareas } from './routes'
 import { Request } from 'express'
 import * as bodyParser from 'body-parser'
+import { inicializarBDatos } from './services/database.service'
 
 let httpServer: http.Server
 let app = express()
@@ -59,6 +60,15 @@ const iniciar = async () => {
     await inicializar()
     console.log('Servidor ejecutándose!')
   } catch (error) {
+    console.log(error)
+  }
+
+  try {
+    console.log('Iniciando Mongo connect -->')
+    await inicializarBDatos()
+    console.log('Mongo connect success <--')
+  } catch (error) {
+    console.log('Error Mongo connect')
     console.log(error)
   }
 }

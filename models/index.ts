@@ -1,0 +1,1 @@
+export {default as Tarea} from './tarea.model'
