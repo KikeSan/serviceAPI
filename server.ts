@@ -63,14 +63,14 @@ const iniciar = async () => {
     console.log(error)
   }
 
-  try {
+  /* try {
     console.log('Iniciando Mongo connect -->')
     await inicializarBDatos()
     console.log('Mongo connect success <--')
   } catch (error) {
     console.log('Error Mongo connect')
     console.log(error)
-  }
+  } */
 }
 
 iniciar()
