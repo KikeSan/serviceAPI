@@ -1,6 +1,6 @@
-var express = require('express');
-var http = require('http');
-var app = express();
+var express = require('express')
+var http = require('http')
+var app = express()
 
 var tareas = [
   {
@@ -32,41 +32,41 @@ var tareas = [
     fecha: 'Mon Sep 2 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   },
   {
-    id: 5,
+    id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
     title: 'Tarea5',
     description: 'loremp impsum',
     status: 'complete',
     fecha: 'Fri Sep 18 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   }
-];
+]
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', '*')
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
+  )
+  next()
+})
 
 app.get('/tareas', (req, res) => {
-  res.send(tareas);
-});
+  res.send(tareas)
+})
 
 app.get('/tareas/editar/:id', (req, res) => {
-  var result;
+  var result
   tareas.forEach((element, index) => {
     if (element.id == req.params.id) {
-      result = tareas[index];
+      result = tareas[index]
     }
-  });
-  res.send(result);
-});
+  })
+  res.send(result)
+})
 
 app.get('/', (req, res) => {
-  res.status(200).send('Welcome to the jungle!');
-});
+  res.status(200).send('Welcome to the jungle!')
+})
 
 app.post('/tareas', (req, res) => {
   tareas.push({
@@ -75,15 +75,15 @@ app.post('/tareas', (req, res) => {
     description: req.query.description,
     status: req.query.status,
     fecha: req.query.fecha
-  });
-  res.send(tareas);
-});
+  })
+  res.send(tareas)
+})
 app.patch('/tareas', (req, res) => {
-  res.send('PATCH method');
-});
+  res.send('PATCH method')
+})
 
 app.put('/tareas/actualizar', (req, res) => {
-  console.log('Params: ', req.query.id);
+  console.log('Params: ', req.query.id)
   for (let i = 0; i < tareas.length; i++) {
     if (tareas[i].id == Number(req.query.id)) {
       tareas[i] = {
@@ -92,21 +92,21 @@ app.put('/tareas/actualizar', (req, res) => {
         description: req.query.description,
         status: req.query.status,
         fecha: req.query.fecha
-      };
+      }
     }
   }
-  res.send(tareas);
-});
+  res.send(tareas)
+})
 
 app.delete('/tareas/:id', (req, res) => {
   for (var i = 0; i < tareas.length; i++) {
     if (Number(tareas[i].id) === Number(req.params.id)) {
-      tareas.splice(i, 1);
+      tareas.splice(i, 1)
     }
   }
-  res.send(tareas);
-});
+  res.send(tareas)
+})
 
 http.createServer(app).listen(8001, () => {
-  console.log('Server started at http://localhost:8001');
-});
+  console.log('Server started at http://localhost:8001')
+})

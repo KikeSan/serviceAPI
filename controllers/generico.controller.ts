@@ -1,4 +1,4 @@
-let tareas = [
+/* let tareas = [
   {
     id: '2c5ea4c0-4067-11e9-8bad-9b1deb4d3b7d',
     title: 'Tarea1',
@@ -34,7 +34,9 @@ let tareas = [
     status: 'complete',
     fecha: 'Fri Sep 18 2019 17:06:03 GMT-0500 (hora estándar de Perú)'
   }
-]
+] */
+import httpStatus = require('http-status-codes')
+
 class GenericoController {
   constructor(private modelo: any) {
     this.listar = this.listar.bind(this)
@@ -44,52 +46,84 @@ class GenericoController {
     this.eliminar = this.eliminar.bind(this)
   }
 
-  listar(req, res) {
+  async listar(req, res) {
     /* res.type("application/json").send({
       name: "Fullstack",
       ruta: req.url,
       modelo: this.modelo
     }) */
     //console.log(tareas)
-    res.send(tareas)
+    const results = await this.modelo.find()
+    res.status(httpStatus.OK).json({
+      status: httpStatus.OK,
+      message: 'List',
+      results
+    })
+    //res.send(tareas)
   }
 
-  obtenerUno(req, res) {
-    console.log(req.params)
+  async obtenerUno(req, res) {
+    const data = req.params
+    const result = await this.modelo.findOne(data)
+
+    res.status(httpStatus.OK).json({
+      status: httpStatus.OK,
+      message: 'Document',
+      result
+    })
     /* res.type('application/json').send({
       name: 'Fullstack Detalle',
       ruta: req.url
     }) */
-    let result
+    /* let result
     tareas.forEach((element, index) => {
       if (element.id == req.params.id) {
         result = tareas[index]
       }
     })
-    res.send(result)
+    res.send(result) */
   }
 
-  insertar(req, res) {
+  async insertar(req, res) {
+    const data = req.body
+
+    const usuario = new this.modelo(data)
+    await usuario.save()
+
+    res.status(httpStatus.CREATED).json({
+      status: httpStatus.CREATED,
+      message: 'Document added'
+    })
     /* res.status(201).json({
       status: 201,
       message: 'Usuario insertado'
     }) */
-    tareas.push({
+    /* tareas.push({
       id: req.query.id,
       title: req.query.title,
       description: req.query.description,
       status: req.query.status,
       fecha: req.query.fecha
     })
-    res.send(tareas)
+    res.send(tareas) */
   }
 
-  actualizar(req, res) {
+  async actualizar(req, res) {
+    const params = req.params
+    const body = req.body
+
+    await this.modelo.findOneAndUpdate(params, body)
+
+    res.status(httpStatus.CREATED).json({
+      status: httpStatus.CREATED,
+      message: 'Document updated'
+    })
+
     /* res.status(201).json({
       status: 201,
       message: 'Usuario actualizado'
     }) */
-    for (let i = 0; i < tareas.length; i++) {
+    /* for (let i = 0; i < tareas.length; i++) {
       if (tareas[i].id == req.query.id) {
         tareas[i] = {
           id: req.query.id,
@@ -100,20 +134,29 @@ class GenericoController {
         }
       }
     }
-    res.send(tareas)
+    res.send(tareas) */
   }
 
-  eliminar(req, res) {
+  async eliminar(req, res) {
+    const params = req.params
+
+    await this.modelo.findOneAndRemove(params)
+
+    res.status(httpStatus.CREATED).json({
+      status: httpStatus.CREATED,
+      message: 'Document deleted'
+    })
+
     /* res.status(201).json({
       status: 201,
       message: 'Usuario eliminado'
     }) */
-    for (var i = 0; i < tareas.length; i++) {
+    /* for (var i = 0; i < tareas.length; i++) {
       if (tareas[i].id === req.params.id) {
         tareas.splice(i, 1)
       }
     }
-    res.send(tareas)
+    res.send(tareas) */
   }
 }
 

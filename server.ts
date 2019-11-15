@@ -1,76 +1,74 @@
-import * as http from 'http'
 import express = require('express')
-import { RouterTareas } from './routes'
 import { Request } from 'express'
+import * as http from 'http'
 import * as bodyParser from 'body-parser'
-import { inicializarBDatos } from './services/database.service'
 
-let httpServer: http.Server
-let app = express()
+import { RouterTareas } from './routes'
+import { inicializarBaseDatos } from './services/database.service'
 
-interface RequestApp extends Request {
-  estaAutenticado: boolean
-}
+const cluster = require('cluster')
 
-const inicializar = (): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    httpServer = http.createServer(app)
+if (cluster.isMaster) {
+  for (let i = 0; i < require('os').cpus().length / 2; i++) {
+    cluster.fork()
+  }
+} else {
+  const yenv = require('yenv')
+  const env = yenv()
 
-    app.use(bodyParser.json())
-    app.use(bodyParser.urlencoded({ extended: false }))
+  let httpServer: http.Server
+  let app = express()
 
-    app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*')
-      res.header('Access-Control-Allow-Origin', '*')
-      res.header('Access-Control-Allow-Methods', '*')
-      res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept'
-      )
-      next()
-    })
-
-    app.use('/tareas', (req: RequestApp, res, next) => {
-      req.estaAutenticado = true
-      /**
-       * Logica de autenticacion
-       */
-      next()
-    })
-
-    /* app.use('/tareas', (req, res) => {
-      res.json({
-        status: 409,
-        message: 'Acceso restringido'
-      })
-    }) */
-
-    app.use('/tareas', RouterTareas)
-
-    httpServer
-      .listen(3000)
-      .on('listening', () => resolve())
-      .on('error', () => reject())
-  })
-}
-
-const iniciar = async () => {
-  try {
-    console.log('Iniciando servidor ...')
-    await inicializar()
-    console.log('Servidor ejecutándose!')
-  } catch (error) {
-    console.log(error)
+  interface RequestApp extends Request {
+    estaAutenticado: boolean
   }
 
-  /* try {
-    console.log('Iniciando Mongo connect -->')
-    await inicializarBDatos()
-    console.log('Mongo connect success <--')
-  } catch (error) {
-    console.log('Error Mongo connect')
-    console.log(error)
-  } */
-}
+  const inicializar = (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      httpServer = http.createServer(app)
 
-iniciar()
+      app.use(bodyParser.json())
+      app.use(bodyParser.urlencoded({ extended: true }))
+
+      app.use(express.static('./public'))
+
+      app.use('/tareas', (req: RequestApp, res, next) => {
+        req.estaAutenticado = true
+        /**
+         * Logica de autenticacion
+         */
+        next()
+      })
+      app.use('/tareas', (req, res) => {
+        res.json({ status: 409, message: 'El usuario no tiene permiso' })
+      })
+
+      app.use('/tareas', RouterTareas)
+
+      httpServer
+        .listen(env.PORT)
+        .on('listening', () => resolve())
+        .on('error', err => reject(err))
+    })
+  }
+
+  const iniciar = async () => {
+    try {
+      console.log('Iniciando servidor ...')
+      await inicializar()
+      console.log('Servidor ejecutándose!')
+    } catch (error) {
+      console.log(error)
+    }
+    try {
+      console.log('Iniciando conexión con MongoDB')
+      await inicializarBaseDatos()
+      console.log('Conexión exitosa a MongoDB')
+    } catch (error) {
+      console.log('Error de conexión')
+      console.log(error)
+    }
+  }
+
+  iniciar()
+}
