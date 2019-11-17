@@ -53,7 +53,7 @@ class GenericoController {
       modelo: this.modelo
     }) */
     //console.log(tareas)
-    console.log('MODELO::::', this.modelo);
+    console.log('MODELO::::>', this.modelo);
     const results = await this.modelo.find();
     res.status(httpStatus.OK).json({
       status: httpStatus.OK,
