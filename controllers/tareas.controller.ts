@@ -1,9 +1,9 @@
-import GenericoController from "./generico.controller";
+import GenericoController from './generico.controller';
 
 class Controller extends GenericoController {
   constructor() {
-    super("alumnos")
+    super('tareas');
   }
 }
 
-export default Controller
+export default Controller;
