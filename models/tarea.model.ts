@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const esquema = new mongoose.Schema({
   title: {
@@ -9,8 +9,16 @@ const esquema = new mongoose.Schema({
   description: String,
   status: String,
   fecha: String
-});
+})
 
-const modelo = mongoose.model('Tarea', esquema);
+function autoPoblar(next) {
+  this.populate('roles')
+  next()
+}
 
-export default modelo;
+esquema.pre('find', autoPoblar)
+esquema.pre('findOne', autoPoblar)
+
+const modelo = mongoose.model('Tarea', esquema)
+
+export default modelo
