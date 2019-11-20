@@ -6,19 +6,24 @@ Servicios para la aplicación en Angular TaskMaker que se encuentra en este otro
 
 ## El servicio incluye
 
-- Listar()
+- Listar( )
+
   Como su nombre lo indica, muestra todas las tareas creadas en mongo
 
-- ObtenerUno()
+- ObtenerUno( )
+
   Obtiene la información de una tarea, recibiendo como parámetro el id
 
-- Insertar()
+- Insertar( )
+
   Guarda la información recibida desde el formulario en Angular en la BD
 
-- Actualizar()
+- Actualizar( )
+
   Actualiza la información cambiada en el formulario en la BD
 
-- Eliminar()
+- Eliminar( )
+
   Elimina una tarea, aquí también recibe como parámetro el id de la tarea
 
 BD Mongo Atlas:
